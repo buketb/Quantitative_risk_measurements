@@ -184,4 +184,169 @@ plot.zoo(zcb_x2[, yield_cols])
 # Plot the yield curve for the first day of zcb
 plot(maturity, zcb[1, ], ylim = range(zcb), type = "l", ylab = "yield (%)", col = "red")
 
+#FTSE Example
 
+head(ftse)
+
+tail(ftse)
+
+#give the min and maximum values of FTSE
+
+ 
+
+#unbiased sample estimators
+
+mu <- mean(ftse)
+
+sigma <- sd(ftse)
+
+c(mu, sigma)
+
+ 
+
+#displaying the fitted normal on the histogram
+
+ 
+
+hist(ftse, nclass = 20, probability = TRUE)
+
+lines(ftse, dnorm(ftse, mu, sigma), col="red")
+
+ 
+
+#dnorm(x, mean, sd) calculates the probability density function
+
+#(PDF) of the data x with the calculated sample mean and standard deviation;
+
+#this is known as the method-of-moments.
+
+ 
+
+#Finally, to calculate an estimate of the density of data x, use density(x).
+
+#This creates a so-called kernel-density estimate (KDE) using a non-parametric
+
+#method that makes no assumptions about the underlying distribution.
+
+ 
+
+ 
+
+# Calculate average and standard deviation of djx
+
+mu <- mean(djx)
+
+sigma <- sd(djx)
+
+ 
+
+# Plot histogram of djx
+
+hist(djx, nclass = 20, probability = TRUE)
+
+ 
+
+# Add the normal density as a red line to histogram
+
+lines(djx, dnorm(djx, mean = mu, sd = sigma), col = "red")
+
+ 
+
+# Plot non-parametric KDE of djx
+
+plot(density(djx))
+
+ 
+
+# Add the normal density as red line to KDE
+
+lines(djx, dnorm(djx, mean = mu, sd = sigma), col = "red")
+
+ 
+
+ 
+
+#Testing the normality
+
+
+data <- rnorm(1000, mean=3, sd=2)
+
+ 
+
+#Q-Q Plot:
+
+qqnorm(data)
+
+qqline(data, col= "red")
+
+ 
+
+#data with heavier tails than normal: inverted S shape
+
+#data with lighter tails than normal: S shape
+
+#data with very skewed distribution: curved shape
+
+ 
+
+ 
+
+# Make a Q-Q plot of djx and add a red line
+
+qqnorm(djx)
+
+qqline(djx, col="red")
+
+# Calculate the length of djx as n
+
+n <- length(djx)
+
+ 
+
+# Generate n standard normal variables, make a Q-Q plot, add a red line
+
+x1 <- rnorm(n, 0,1)
+
+qqnorm(x1)
+
+qqline(x1, col="red")
+
+ 
+
+# Generate n Student t variables, make a Q-Q plot, add a red line
+
+x2 <- rt(n, df = 4)
+
+qqnorm(x2)
+
+qqline(x2, col="red")
+
+ 
+
+# Generate n standard uniform variables, make a Q-Q plot, add red line
+
+x3 <- runif(n)
+
+qqnorm(x3)
+
+qqline(x3, col="red")
+
+ 
+
+ 
+
+#Skewness and kurtosis tests:
+
+#Jarque-Bera Test:
+
+ 
+
+library(moments)
+
+skewness(data) #symmetry
+
+kurtosis(data) #heavy or light tail
+
+#where theoretical normal values are 0 and 3
+
+ 
