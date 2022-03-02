@@ -1,2 +1,3 @@
 # Quantitative_risk_measurements
-Quantitative Risk Managements
+Quantitative Risk Management
+
