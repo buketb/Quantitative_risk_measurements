@@ -350,3 +350,151 @@ kurtosis(data) #heavy or light tail
 #where theoretical normal values are 0 and 3
 
  
+# Calculate skewness and kurtosis of djx
+skewness(djx)
+kurtosis(djx)
+
+# Carry out a Jarque-Bera test for djx
+jarque.test(djx)
+
+# Calculate skewness and kurtosis of djreturns 
+s <- apply(djreturns, 2, skewness)
+k <- apply(djreturns, 2, kurtosis)
+
+# Plot k against s and add text labels to identify stocks
+plot(s, k, type = "n")
+text(s, k, names(s), cex = 0.6)
+
+# Carry out Jarque-Bera tests for each constituent in djreturns
+apply(djreturns, 2, jarque.test)
+
+
+
+
+# Calculate weekly and monthly log-returns from djx_d
+djx_w <- apply.weekly(djx_d, colSums)
+djx_m <- apply.monthly(djx_d, colSums)
+
+# Calculate the p-value for each series in djx_d
+apply(djx_d, 2, function(v){jarque.test(v)$p.value})
+
+# Calculate the p-value for each series in djx_w
+apply(djx_w, 2, function(v){jarque.test(v)$p.value})
+
+# Calculate the p-value for each series in djx_m
+apply(djx_m, 2, function(v){jarque.test(v)$p.value})
+
+
+
+
+#Overlapping returns
+#When you aggregate series by summing daily log-returns into longer intervals, 
+#you analyze a smaller amount of observations. To preserve the quantity of data, 
+#you can calculate overlapping returns with the rollapplyr() function; this also 
+#creates strong correlations between observations.
+
+# Calculate a 21-day moving sum of djx
+djx21 <- rollapplyr(djx, width = 21, FUN = sum)[-(1:20)]
+
+# Calculate a 63-day moving sum of djx
+djx63 <- rollapplyr(djx, width = 63, FUN = sum)[-(1:62)]
+
+# Merge the three series and plot
+djx2 <- merge(djx, djx21, djx63, all = FALSE)
+plot.zoo(djx2)
+
+# Compute the skewness and kurtosis for each series in djx2
+apply(djx2, 2, skewness)
+apply(djx2, 2, kurtosis)
+
+# Conduct the Jarque-Bera test to each series in djx2
+apply(djx2, 2, jarque.test)
+
+########
+#Student-t distribution
+#Student-t distribution has 3 parameters: nu, mu, and sigma
+
+library(QRM)
+tfit <- fit.st(ftse)
+tpars<- tfit$par.ests
+tpars
+
+nu <- tpars[1]
+mu <- tpars[2]
+sigma <- tpars[3]
+
+#displaying the fitted Student t distribution
+
+hist(ftse, nclass = 20, probability= T)
+lines(ftse, dnorm(ftse, mean=mean(ftse), sd=sd(ftse), col="red"))
+
+yvals <- dt((ftse-mu)/sigma, df=nu)/sigma
+lines(ftse,yvals, col="blue")
+
+
+
+# Fit a Student t distribution to djx
+tfit <- fit.st(djx)
+
+# Define tpars, nu, mu, and sigma
+tpars <- tfit$par.ests
+nu <- tpars[1]
+mu <- tpars[2]
+sigma <- tpars[3]
+
+# Plot a histogram of djx
+hist(djx, nclass = 20, probability = TRUE, ylim = range(0, 40))
+
+# Compute the fitted t density at the values djx
+yvals <- dt((djx - mu)/sigma, df = nu)/sigma
+
+# Superimpose a red line to show the fitted t density
+lines(djx, yvals, col = "red")
+
+# Plot the daily log-return series in fx_d
+plot.zoo(fx_d)
+
+# Apply the Jarque-Bera test to each of the series in fx_d
+apply(fx_d, 2, jarque.test)
+
+# Plot the monthly log-return series in fx_m
+plot.zoo(fx_m, type ="h")
+
+# Apply the Jarque-Bera test to each of the series in fx_m
+apply(fx_m, 2, jarque.test)
+
+# Fit a Student t distribution to each of the series in fx_m
+apply(fx_m, 2, function(v){fit.st(v)$par.ests})
+
+
+
+
+
+# Plot the interest-rate return series zcbx_m and zcbx2_m
+plot.zoo(zcbx_m, type ="h")
+plot.zoo(zcbx2_m, type ="h")
+
+# Make Q-Q plots of the 3rd component series of zcbx_m and zcbx2_m
+qqnorm(zcbx_m[,3])
+qqnorm(zcbx2_m[,3])
+
+# Compute the kurtosis of each series in zcbx_m and zcbx2_m
+apply(zcbx_m,2,kurtosis)
+apply(zcbx2_m,2,kurtosis)
+
+# Conduct the Jarque-Bera test on each series in zcbx_m and zcbx2_m
+apply(zcbx_m,2,jarque.test)
+apply(zcbx2_m,2,jarque.test)
+
+#goldx_q contains quarterly log-returns of the gold price from the 
+#beginning of 1990 to the end of 2015.
+
+#Test the data for normality using the Jarque-Bera test, then fit
+#a Student t distribution and find the estimated degree of freedom 
+
+jaque.test(goldx_q)
+
+fit.st(goldx_q)
+
+
+
