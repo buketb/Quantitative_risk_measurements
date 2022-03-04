@@ -502,6 +502,121 @@ fit.st(goldx_q)
 # Real returns often show volatility clustering
 
 
+#djx contains the Dow Jones index
+#npars and tpars contain the parameter estimates that are obtained
+#when a normal distribution and a t distribution are fitted to djx
+
+
+# Compute the length n of djx 
+n <- length(djx)
+
+#  Generate a normal sample of size n with parameters given by npars
+ndata <- rnorm(n,mean=0,sd=1)*npars[2] + npars[1]
+
+# Generate a t-distributed sample of size n with paramaters given by tpars
+tdata <- rt(n, df = tpars[1])*tpars[3] + tpars[2]
+
+# Make ndata and tdata into xts objects
+ndatax <- xts(ndata, time(djx))
+tdatax <- xts(tdata, time(djx))
+
+# Merge djx, ndatax, and tdatax and plot
+alldata <- merge(djx,ndatax,tdatax)
+plot.zoo(alldata, type = "h", ylim = range(alldata))
+
+#when there is volatility clustering, and you know you are in the middle of 
+#a particularly volatile period, then you know that the probability of another 
+#extreme market move is increased.
+
+# If we know that there is volatility clustering, then serial correlations are 
+#specifically important
+
+
+#Thus, estimating the sample autocorrelation is significant.
+
+#When you estimate sample autocorrelations, you are making the implicit assumption
+#that the series has a property known as stationarity. Consider a daily log-return
+#series. Stationarity would mean that the expected daily return is always the same;
+#the variance of daily returns is always the same, and the correlation between 
+#returns on days the same distance apart is always the same.
+
+
+# remember, the sign change in time series is very significant. Thus, it is better 
+# to use absolute value in correlogram to check acf
+acf(ftse)
+acf(abs(ftse))
+
+
+
+# Set up a plot region to show 3 plots at a time
+par(mfrow = c(3, 1))
+
+# Plot the acfs of djx, ndata and tdata
+plot(djx)
+plot(ndata)
+plot(tdata)
+
+# Plot the acfs of the absolute values
+par(mfrow = c(3, 1))
+acf(abs(djx))
+acf(abs(ndata))
+acf(abs(tdata))
+
+# Plot the acfs of the squares of the values
+par(mfrow = c(3, 1))
+acf((djx)^2)
+acf((ndata)^2)
+acf((tdata)^2)
+
+
+# The Ljung-Box Test
+# testing the iid hypothesis
+
+Box.test(ftse, lag=10, type="Ljung")
+
+# Apply the Ljung-Box test to djx
+Box.test(djx, lag = 10, type = "Ljung")
+
+# Apply the Ljung-Box test to absolute values of djx
+Box.test(abs(djx), lag = 10, type = "Ljung")
+
+# Apply the Ljung-Box test to all return series in djall
+apply(djall, 2, Box.test, lag = 10, type = "Ljung")
+
+# Apply the Ljung-Box test to absolute values of all returns in djall
+apply(abs(djall), 2, Box.test, lag = 10, type = "Ljung")
+
+
+
+# Create monthly log-returns from djx
+djx_m <- apply.monthly(djx, sum)
+
+# Apply Ljung-Box tests to raw and absolute values of djx_m
+Box.test(djx_m, lag = 10, type = "Ljung")
+Box.test(abs(djx_m), lag = 10, type = "Ljung")
+
+# Create monthly log-returns from djall
+djall_m <- apply.monthly(djall, FUN= colSums)
+
+# Apply Ljung-Box tests to raw and absolute values of djall_m
+apply(djall_m, 2, Box.test, lag = 10, type = "Ljung")
+apply(abs(djall_m), 2, Box.test, lag = 10, type = "Ljung")
+
+#The amount of serial dependence appears to decrease when we move from daily to monthly returns.
+
+
+#Extracting the extreme of return series
+
+ftse <- diff(log(FTSE))["1991-01-02/2010-12-31"]
+ftse_losses <- ftse
+ftse_extremes <- ftse_losses[ftse_losses > 0.025]
+
+head(ftse_extremes)
+
+length(ftse_extremes) #how many extreme valu we have
+
+plot(ftse_extremes, type= "h", auto.grid=F)
+#the pattern show the characteristic of iid or serial correlation
 
 
 
