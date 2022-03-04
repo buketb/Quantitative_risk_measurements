@@ -496,5 +496,12 @@ jaque.test(goldx_q)
 
 fit.st(goldx_q)
 
+# Mostly the financial data have heavier tail than std. normal.
+# Random walk models ~ IID ?
+# if so, past prices can not tell anything about the future prices. The best guest for the future price, therefore, could be today's price.
+# Real returns often show volatility clustering
+
+
+
 
 
