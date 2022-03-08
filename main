@@ -666,3 +666,29 @@ apply(abs(fx_w), 2, Box.test, lag = 10, type = "Ljung")
 
 
 
+
+
+#volatility and serial dependence is also a feature of daily and monthly interest-rate log-returns.
+#The dataset zcb_x contains daily log-returns for the 1-year, 5-year and 10-year Canadian 
+#zero-coupon bond yields while zcbx_m contains the corresponding monthly log-returns.
+
+
+
+
+# Make acf plots of zcb_x and the absolute values of zcb_x
+acf(zcb_x)
+acf(abs(zcb_x))
+
+# Apply the Ljung-Box test to the components of zcb_x and their absolute values
+apply(zcb_x,2, Box.test, lag=10, type ="Ljung")
+apply(abs(zcb_x),2, Box.test, lag=10, type ="Ljung")
+
+# Make acf plots of zcbx_m and the absolute values of zcbx_m
+acf(zcbx_m)
+acf(abs(zcbx_m))
+
+
+# Apply the Ljung-Box test to the components of zcbx_m and their absolute values
+apply(zcbx_m,2, Box.test, lag=10, type ="Ljung")
+apply(abs(zcbx_m),2, Box.test, lag=10, type ="Ljung")
+
