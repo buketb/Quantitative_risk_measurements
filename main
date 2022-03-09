@@ -781,3 +781,23 @@ qnorm(0.99, mean = mu, sd = sigma)
 ESnorm(0.99, mu = mu, sd = sigma)
 
 
+#########################
+#Option Portfolio and Black Scholes
+
+#Pricing afirst call option:
+
+K <- 50 #strike
+T <- 2
+t <- 0 #current time
+S <- 40 #current time price
+r <- 0.005  #interest rate
+sigma <- 0.25 # volatility
+Black_Scholes(t, S, r, sigma, K, T, "call")
+
+
+Black_Scholes(t, S, r, sigma*1.2, K, T, "call") #if the volatility increase by 20%
+# the price of the option is higher
+
+
+
+
