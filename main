@@ -704,6 +704,22 @@ plot.zoo(riskfactors)
 
 #Historical Simulation
 #non-parametric method: resample historical risk-factor returns and examine their effect on current portfolio
+#Loss operator shows effect of different risk-factor returns on the portfolio.
+
+#VaR 
+#simulaate a loss
+losses <- rnorm(100)
+losses_o <- sort(losses, decreasing =T) #ordered
+head(losses_o)
+
+quantile(losses_o, 0.95) # VaR for 95%
+
+#Expected shortfall (ES)
+mean(losses[losses >quantile(losses, 0.95)])
+
+#check with the written function 
+ESnorm(0.95)
+
 
 
 
