@@ -714,11 +714,16 @@ head(losses_o)
 
 quantile(losses_o, 0.95) # VaR for 95%
 
+#compare with the exact value
+qnorm(0.95) #since it is just quantile
+
 #Expected shortfall (ES)
 mean(losses[losses >quantile(losses, 0.95)])
 
 #check with the written function 
 ESnorm(0.95)
+
+
 
 
 
