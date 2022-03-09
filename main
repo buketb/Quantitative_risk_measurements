@@ -786,7 +786,7 @@ ESnorm(0.99, mu = mu, sd = sigma)
 
 #Pricing afirst call option:
 
-K <- 50 #strike
+K <- 50 #strike           (The strike price of an option is the price at which a put or call option can be exercised. It is also known as the exercise price.)
 T <- 2
 t <- 0 #current time
 S <- 40 #current time price
