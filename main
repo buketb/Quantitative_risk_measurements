@@ -693,3 +693,16 @@ acf(abs(zcbx_m))
 apply(zcbx_m,2, Box.test, lag=10, type ="Ljung")
 apply(abs(zcbx_m),2, Box.test, lag=10, type ="Ljung")
 
+
+
+#International Equity Portfolio
+#If an investor invests her wealth in 30 % FTSE, 40% S&P500, and 30% SMI
+#Risk Factors: FTSE, S&P500, SMI, GBP/USD,and GBP/CHP
+
+riskfactors <- merge(FTSE, SP500, SMI, USD_GBP, CHP_GBP, all=F)["/2012-12-31",]
+
+
+
+
+
+
