@@ -700,6 +700,11 @@ apply(abs(zcbx_m),2, Box.test, lag=10, type ="Ljung")
 #Risk Factors: FTSE, S&P500, SMI, GBP/USD,and GBP/CHP
 
 riskfactors <- merge(FTSE, SP500, SMI, USD_GBP, CHP_GBP, all=F)["/2012-12-31",]
+plot.zoo(riskfactors)
+
+#Historical Simulation
+#non-parametric method: resample historical risk-factor returns and examine their effect on current portfolio
+
 
 
 
