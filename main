@@ -827,3 +827,35 @@ Black_Scholes(0, 80, r, sigma, K, 1,"put")
 # Price a European put option that matures in one year if the current stock price is 120
 Black_Scholes(0, 120, r, sigma, K, 1,"put")
 
+
+
+#The daily risk-factor values for the period 1990-2010 are contained in riskfactors and the corresponding log-returns in returns
+
+#the VIX index which is constructed from the implied volatilities of a wide range of options on the S&P 500 index
+
+names(riskfactors)
+
+
+# Plot the risk factors and the log-returns
+plot.zoo(riskfactors)
+plot.zoo(returns)
+
+# Make a scatterplot of the two return series
+plot(as.matrix(returns))
+
+
+# Apply the Jarque-Bera test to the returns and make a Q-Q plot of the volatility log-returns
+apply(returns,2, jarque.test)
+qqnorm(returns[,2])
+qqline(returns[,2])
+
+# Create the sample acf of the returns and absolute returns
+acf(returns)
+acf(abs(returns))
+
+# Calculate the correlation between the log-returns
+cor(returns)
+
+#It is clear that the log-returns of the VIX index show the same stylized facts as other returns that you have analyzed
+#- non-normality, heavy tails, volatility, serial dependence in the absolute values but not the raw values. 
+#Moreover, they are negatively correlated with the log-returns of the SP500 index.
