@@ -614,7 +614,7 @@ ftse_extremes <- ftse_losses[ftse_losses > 0.025]
 
 head(ftse_extremes)
 
-length(ftse_extremes) #how many extreme valu we have
+length(ftse_extremes) #how many extreme value we have
 
 plot(ftse_extremes, type= "h", auto.grid=F)
 #the pattern show the characteristic of iid or serial correlation
